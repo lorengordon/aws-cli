@@ -53,7 +53,7 @@
         },
         "ca-bundle": {
                 "dest": "ca_bundle",
-                "help": "<p>The CA certificate bundle to use when verifying SSL certificates. Overrides config/env settings.</p>"
+                "help": "<p>The CA certificate bundle to use when verifying SSL certificates. Keyword 'System' is an alias for '/etc/pki/tls/certs/ca-bundle.crt'. Overrides config/env settings.</p>"
         }
     }
 }

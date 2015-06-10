@@ -16,7 +16,7 @@ import os
 from botocore.handlers import disable_signing
 import jmespath
 
-from awscli.compat import urlparse
+from awscli.compat import urlparse, six
 
 
 def register_parse_global_args(cli):
@@ -58,6 +58,7 @@ def _resolve_endpoint_url(value):
 
 
 def resolve_verify_ssl(parsed_args, session, **kwargs):
+    SYSTEM_CA_BUNDLE = '/etc/pki/tls/certs/ca-bundle.crt'
     arg_name = 'verify_ssl'
     arg_value = getattr(parsed_args, arg_name, None)
     if arg_value is not None:
@@ -67,6 +68,9 @@ def resolve_verify_ssl(parsed_args, session, **kwargs):
         else:
             verify = getattr(parsed_args, 'ca_bundle', None) or \
                         session.get_config_variable('ca_bundle')
+            if isinstance(verify, six.string_types):
+                if u'system' == verify.lower():
+                    verify = SYSTEM_CA_BUNDLE
         setattr(parsed_args, arg_name, verify)
 
 
